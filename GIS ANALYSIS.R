@@ -2,7 +2,7 @@
 rm(list = ls())
 
 # Set directory
-setwd("~/UCT_2025/GIT/GIS-WORKFLOW")
+setwd("~/UCT_2025/GIT/GIS Workflow/GIS")
 
 # DATA CITATION -----------------------------------------------------------
 # South African National Biodiversity Institute (2006-2024). The Vegetation Map of South Africa, Lesotho and Swaziland, Mucina, L., Rutherford, M.C. and Powrie, L.W. (Editors), Online, https://bgis.sanbi.org/Projects/Detail/2258, Version 2024.
@@ -85,10 +85,6 @@ random_colors_soi <- sample(colors(), length(unique(soi$SOIL)))
 
 # Mapview for soil types
 soi_typ_wc <- mapview(soi_wc, zcol = "SOIL", color = random_colors_soi, legend = FALSE,layer.name = "Soil Type")
-
-# Combine maps
-combined_map <- HAm + Eum + veg_typ_wc + soi_typ_wc
-combined_map
 
 # 5. Buffering to show Eu near HA ------------------------------------------
 # Assuming HA and Eu are your points data (Hydnora africana and Euphorbiaceae)
