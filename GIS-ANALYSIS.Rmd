@@ -1,106 +1,134 @@
+
 ---
-title: "GIS Workflow for Hydnora africana and Euphorbiaceae"
+title: "GIS Analysis"
 author: "Nic"
-date: "`r Sys.Date()`"
 output:
   html_document:
     toc: true
     toc_depth: 3
-    theme: united
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
-# Clear working space
-```{r clear_workspace}
-rm(list = ls())
-```
+## 1. Load Packages
 
-# Set Directory
-```{r set_directory}
-setwd("..")
-```
-
-# DATA CITATION
-South African National Biodiversity Institute (2006-2024). The Vegetation Map of South Africa, Lesotho and Swaziland, Mucina, L., Rutherford, M.C. and Powrie, L.W. (Editors), Online, https://bgis.sanbi.org/Projects/Detail/2258, Version 2024.
-
-# 1. Load Packages
-```{r load_packages}
-packs <- c("patchwork","tidyverse","ctv","rinat","sf","rosm","ggspatial","prettymapr", "leaflet", "htmltools", "mapview", "leafpop", "wesanderson","htmlwidgets","htmltools","rmarkdown")
+```{r load-packages}
+# Batch Load necessary packages
+packs <- c("patchwork","tidyverse","ctv","rinat","sf","rosm","ggspatial","prettymapr", 
+           "leaflet", "htmltools", "mapview", "leafpop", "wesanderson","htmlwidgets","rmarkdown")
 lapply(packs, require, character.only = TRUE)
 rm(packs)
 ```
 
-# 2. Read Data
-```{r read_data}
+## 2. Read Data
+
+```{r read-data}
+# Read Vegetation and Soil data
 veg <- st_read("NVM2024Final/Shapefile/NVM2024Final_IEM5_12_07012025.shp")
 soi <- st_read("SOTER_ZA/GIS/SOTER/ZA_SOTERv1.shp")
-soi <- st_transform(soi, st_crs(veg))
+
+# Reproject Soil Data to match Vegetation CRS
+soi <- st_transform(soi, st_crs(veg)) 
+
+# Inat Data: Hydnora africana & Euphorbiaceae
 HA <- get_inat_obs(taxon_name = "Hydnora africana", bounds = c(-35, 18, -30, 25), maxresults = 10000)
 Eu <- get_inat_obs(taxon_name = "Euphorbiaceae", bounds = c(-35, 18, -30, 25), maxresults = 10000)
+
+# Read in Western Cape polygon and reproject
 WC <- st_read("western-cape-south-africa_1334.geojson")
 WC <- st_transform(WC, st_crs(veg))
 ```
 
-# 3. Filter and Set Spatial Objects
-```{r filter_spatial}
+## 3. Filter and Set Spatial Objects
+
+```{r filter-set-objects}
 filter_data <- function(data) {
-  data %>% filter(latitude < 0, !is.na(latitude), captive_cultivated == "false", quality_grade == "research")
+  data %>%
+    filter(latitude < 0, !is.na(latitude), 
+           captive_cultivated == "false", quality_grade == "research")
 }
+
 HA <- filter_data(HA)
 Eu <- filter_data(Eu)
+
 HA <- st_as_sf(HA, coords = c("longitude", "latitude"), crs = 4326)
 Eu <- st_as_sf(Eu, coords = c("longitude", "latitude"), crs = 4326)
+
 HA <- st_transform(HA, st_crs(veg)) %>% st_intersection(WC)
 Eu <- st_transform(Eu, st_crs(veg)) %>% st_intersection(WC)
+
 veg_wc <- st_intersection(veg, WC)
 soi <- st_make_valid(soi)
 soi_wc <- st_intersection(soi, WC)
 ```
 
-# 4. Display Meta Data and Live HTML
-```{r display_metadata}
-HAm <- mapview(HA, col.regions = "purple", legend.title = "Hydnora", layer.name = "Hydnora africana")
-Eum <- mapview(Eu, col.regions = "yellow", legend.title = "Euphorbiaceae", layer.name = "Euphorbiaceae")
-veg_typ_wc <- mapview(veg_wc, zcol = "T_Name", legend = FALSE, layer.name = "Vegetation Type")
-soi_typ_wc <- mapview(soi_wc, zcol = "SOIL", legend = FALSE, layer.name = "Soil Type")
-combined_map <- HAm + Eum + veg_typ_wc + soi_typ_wc
-```
+## 4. Buffering
 
-# 5. Buffering to Show Eu near HA
 ```{r buffering}
-HAbuffer_10k <- 10000
-HAbuffer_1k <- 1000
+HAbuffer_10k <- 10000  
+HAbuffer_1k <- 1000   
+
 HA_buffer10 <- st_buffer(HA, dist = HAbuffer_10k)
 HA_buffer1 <- st_buffer(HA, dist = HAbuffer_1k)
-Eu_within_HA_buffer10 <- st_intersects(Eu, HA_buffer10)
-Eu_within_HA_buffer1 <- st_intersects(Eu, HA_buffer1)
-Eu_within_buffer_10k <- lengths(Eu_within_HA_buffer10) > 0
-Eu_within_buffer_1k <- lengths(Eu_within_HA_buffer1) > 0
-Eu_filtered10k <- Eu[Eu_within_buffer_10k, ]
-Eu_filtered1k <- Eu[Eu_within_buffer_1k, ]
+
+HA_within_10k <- st_intersection(HA, HA_buffer10)
+HA_within_1k <- st_intersection(HA, HA_buffer1)
 ```
 
-# 6. Leaflet HTML Options
-```{r leaflet_html}
+## 5. Interactive Map with 8 Layers
+
+```{r interactive-map}
+# Hydnora africana
+lpcHA <- HA %>%
+  mutate(click_url = paste("<a href='", HA$url, "' target='_blank'>Link to iNat observation</a>", sep = ""))
+
+HAm <- mapview(HA, col.regions = "purple", legend.title = "Hydnora africana",  
+               popup = popupTable(lpcHA, zcol = c("scientific_name","user_login", "click_url")),
+               layer.name = "Hydnora africana")
+
+# Euphorbiaceae
+lpcEu <- Eu %>%
+  mutate(click_url = paste("<a href='", Eu$url, "' target='_blank'>Link to iNat observation</a>", sep = ""))
+
+Eum <- mapview(Eu, col.regions = "yellow", legend.title = "Euphorbiaceae", 
+               popup = popupTable(lpcEu, zcol = c("scientific_name", "user_login", "click_url")),
+               layer.name = "Euphorbiaceae")  
+
+# Vegetation Types
+set.seed(123)
+random_colors <- sample(colors(), length(unique(veg_wc$T_Name)))
+
+veg_typ_wc <- mapview(veg_wc, zcol = "T_Name", color = random_colors, legend = FALSE, layer.name = "Vegetation Type")
+
+# Soil Types
+set.seed(3000)
+random_colors_soi <- sample(colors(), length(unique(soi$SOIL)))
+
+soi_typ_wc <- mapview(soi_wc, zcol = "SOIL", color = random_colors_soi, legend = FALSE, layer.name = "Soil Type")
+
+# Buffer Zones
+HA.10k <- mapview(HA_buffer10, col.regions = "blue", alpha = 0.3, layer.name = "Hydnora 10km Buffer")
+HA.1k <- mapview(HA_buffer1, col.regions = "green", alpha = 0.3, layer.name = "Hydnora 1km Buffer")
+
+# Hydnora within Buffers
+HA.10k.within <- mapview(HA_within_10k, col.regions = "darkblue", layer.name = "Hydnora within 10km Buffer")
+HA.1k.within <- mapview(HA_within_1k, col.regions = "darkgreen", layer.name = "Hydnora within 1km Buffer")
+
+# Combined Map
+combined_map <- HAm + Eum + veg_typ_wc + soi_typ_wc + HA.10k + HA.1k + HA.10k.within + HA.1k.within
 comb.edit <- combined_map@map
-comb.edit <- comb.edit %>% setView(lng = -31, lat = 21, zoom = 6) %>% setMaxBounds(lng1 = 17, lat1 = -35, lng2 = 25, lat2 = -30) %>% addTiles(group = "OSM")
+
+comb.edit <- comb.edit %>%
+  setView(lng = -31, lat = 21, zoom = 6) %>%
+  setMaxBounds(
+    lng1 = 17, lat1 = -35,  
+    lng2 = 25, lat2 = -30
+  ) %>% 
+  addTiles(group = "OSM")
+
 comb.edit
 ```
 
-# 7. Summarizing Points by Vegetation and Soil Type
-```{r summarizing}
-HA_points_with_vegetation <- st_join(HA, veg_wc)
-Eu_points_with_vegetation <- st_join(Eu, veg_wc)
-HA_summary_by_vegetation <- HA_points_with_vegetation %>% group_by(T_Name) %>% summarise(count = n())
-Eu_summary_by_vegetation <- Eu_points_with_vegetation %>% group_by(T_Name) %>% summarise(count = n())
-HA_points_with_soil <- st_join(HA, soi_wc)
-Eu_points_with_soil <- st_join(Eu, soi_wc)
-HA_summary_by_soil <- HA_points_with_soil %>% group_by(SOIL) %>% summarise(count = n())
-Eu_summary_by_soil <- Eu_points_with_soil %>% group_by(SOIL) %>% summarise(count = n())
-```
-
-# 8. References
-- South African National Biodiversity Institute (2006-2024). The Vegetation Map of South Africa, Lesotho and Swaziland. Version 2024.

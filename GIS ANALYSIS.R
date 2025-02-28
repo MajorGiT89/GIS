@@ -236,3 +236,7 @@ Eu_summary_by_soil <- Eu_points_with_soil %>%
             avg_y = mean(st_coordinates(Eu_points_with_soil)[, 2]))
 
 saveWidget(comb.edit, "comb_edit.html")
+
+memory.limit(size = 16000)
+
+rmarkdown::render("GIS-ANALYSIS.Rmd",output_format = "html_document", quiet = FALSE)
