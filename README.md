@@ -1,11 +1,36 @@
-# GIS Workflow: Hydnora africana and Euphorbiaceae iNAt distributions Explorations
+# GIS Workflow: Hydnora africana and Euphorbiaceae iNAt distributions Explorations : the intial inspiration
 
-This project explores the iNat observation distributions of *Hydnora africana* and the *Euphorbiaceae* family within the Western Cape.Hydnora is parasitic on Euphorbiaceae and i wanted to see if this was visible in the iNat observations.Many additional layers are added on to explore in which contexts they occur.
+This project was intially created explores the iNat observational distributions of *Hydnora africana* and the *Euphorbiaceae* family within the Western Cape.Hydnora is parasitic on Euphorbiaceae and I wanted to see if this was visible in the iNat observations.
+It also uses vegetation and soil data to understand the environmental context of these species and provides interactive mapping and spatial analysis tools.
 
-# GIS Workflow: Vegetation and Soil Analysis
+Although it is rather strange and maybe not very useful thing to look the distributions *Hydnora africana* and *Euphorbiaceae* together, I thought that it was good enough data to use to start building my interactive map.
 
-This project explores the distribution of *Hydnora africana* and the *Euphorbiaceae* family within the Western Cape, South Africa. It uses vegetation and soil data to understand the environmental context of these species and provides interactive mapping and spatial analysis tools.
+What I should have done was do more research and then plotted the specific species on which *Hydnora africana* is usually parasitic on (instead of just the whole family). I have also plotted only Western Cape (WC) occurrences, which may be misleading/omit some important data (although Hydnora africana is most commonly seen in the WC.
 
+Read below how I decided to circumnavigate these issues...
+
+
+# GIS Workflow: The final product
+
+What I did was write a function where the user can define which observations (species/genus/family etc.) they would like to select from iNaturalist and then get an interactive and summaries as output (only for the Wesyern Cape as my computer cannot handle generating maps for larger areas).
+All the use has to do is enter the names of whichever groups they would like to explore.
+The code then returns:
+
+1. An interactive map with:
+ - The individual data points for each group (with labels and links to the observation)
+ - Buffer areas of 10km and 1km around each point to see how close they are to each other and how individual points overlap.
+ 
+2. Layers for the map:
+  - Different map base layers from Open Street Maps
+  - Different layers (with labels) of vegetation types and Soil types
+  
+3.Output tables showing how many observations occured in:
+  - Each vegetation type area
+  - Each soil type
+
+###Room for improvement:
+
+I would like to add a layer for protected areas/conservation areas/private game reserves and summary tables for how many of the observations occurred in these areas.I would also like to add a layer for showing elevation. 
 ------------------------------------------------------------------------
 
 ## **Data Citation**
@@ -21,158 +46,10 @@ iNaturalist. (2025). Observation data for Euphorbiaceae obtained from iNaturalis
 Cartography Vectors. (2025). Western Cape, South Africa Map. Retrieved from <https://cartographyvectors.com/map/1334-western-cape-south-africa>.
 
 ------------------------------------------------------------------------
+#How to use:
 
-## **Requirements**
-
-### **R Packages**
-
-The following R packages are required for this workflow:\
-- `patchwork`: Combining ggplot2 plots.\
-- `tidyverse`: Data manipulation and visualization.\
-- `ctv`: Install CRAN task views.\
-- `rinat`: Accessing iNaturalist data.\
-- `sf`: Handling spatial data.\
-- `rosm`, `ggspatial`, `prettymapr`: Map visualization and annotation.\
-- `leaflet`, `htmltools`, `mapview`, `leafpop`: Interactive mapping.\
-- `wesanderson`: Color palettes.\
-- `htmlwidgets`, `rmarkdown`: Creating interactive documents.
-
-**Install all packages using:**
-
-``` r
-packs <- c("patchwork","tidyverse","ctv","rinat","sf","rosm","ggspatial","prettymapr", "leaflet", "htmltools", "mapview", "leafpop", "wesanderson","htmlwidgets","rmarkdown")
-install.packages(packs)
-```
-
-------------------------------------------------------------------------
-
-## **Workflow Overview**
-
-### 1. **Load Data**
-
--   Load vegetation and soil data using `st_read()`.\
--   Fetch iNaturalist observations for *Hydnora africana* and *Euphorbiaceae* using `get_inat_obs()`.\
--   Reproject and crop data to the Western Cape.
-
-------------------------------------------------------------------------
-
-### 2. **Spatial Filtering**
-
--   Filter iNaturalist data for accuracy, latitude, and quality using:\
-
-``` r
-filter_data <- function(data) {
-  data %>%
-    filter(latitude < 0, !is.na(latitude), 
-           captive_cultivated == "false", quality_grade == "research")
-}
-```
-
--   Convert filtered data into spatial objects using `st_as_sf()`.\
--   Crop all spatial data to the Western Cape polygon using `st_intersection()`.
-
-------------------------------------------------------------------------
-
-### 3. **Interactive Mapping**
-
--   Create interactive maps using `mapview` with custom colors and popups for species observations.\
--   Example for *Hydnora africana*:
-
-``` r
-HAm <- mapview(HA, col.regions = "purple", legend.title = "Hydnora", 
-               popup = popupTable(lpcHA, zcol = c("scientific_name","user_login", "click_url")),
-               layer.name = "Hydnora africana")
-```
-
--   Combine multiple layers for vegetation types, soil types, and species distributions.
-
-------------------------------------------------------------------------
-
-### 4. **Spatial Analysis**
-
--   **Summarizing Points by Vegetation Type**:
-
-    -   Spatial join with vegetation polygons.
-    -   Summarize observations by vegetation type.\
-
-    ``` r
-    HA_summary_by_vegetation <- HA_points_with_vegetation %>%
-    group_by(T_Name) %>%
-    summarise(count = n())
-    ```
-
--   **Summarizing Points by Soil Type**:
-
-    -   Spatial join with soil polygons.
-    -   Summarize observations by soil type.
-
-------------------------------------------------------------------------
-
-### 5. **Buffer Analysis**
-
--   Create 10 km and 1 km buffers around *Hydnora africana* points to explore proximity of *Euphorbiaceae* observations.\
-
-``` r
-HA_buffer10 <- st_buffer(HA, dist = 10000)
-HA_buffer1 <- st_buffer(HA, dist = 1000)
-```
-
--   Check which *Euphorbiaceae* points fall within the buffers using `st_intersects()`.\
--   Visualize the results with overlapping buffer layers in `mapview`.
-
-------------------------------------------------------------------------
-
-### 6. **Interactive Map Export**
-
--   Combine all maps and export as interactive HTML using `leaflet` and `mapview`.\
--   Set view, max bounds, and add custom CSS for improved visualization:\
-
-``` r
-comb.edit <- combined_map@map %>%
-  setView(lng = -31, lat = 21, zoom = 6) %>%
-  setMaxBounds(lng1 = 17, lat1 = -35, lng2 = 25, lat2 = -30)
-```
-
-------------------------------------------------------------------------
-
-## **Usage**
-
-1.  **Clone the Repository**\
-
-``` sh
-git clone https://github.com/YourUsername/GIS-WORKFLOW.git
-cd GIS-WORKFLOW
-```
-
-2.  **Set Working Directory and Clear Workspace**\
-    Make sure to set your working directory at the beginning of your R script:\
-
-``` r
-setwd("~/UCT_2025/GIT/GIS-WORKFLOW")
-rm(list = ls())
-```
-
-3.  **Run the R Script**\
-    Open the R script in RStudio and run all chunks sequentially, or use:\
-
-``` r
-source("path_to_script.R")
-```
-
-4.  **View Interactive Maps**\
-    The interactive maps will open in the RStudio Viewer pane. Exported HTML maps can be opened in any browser.
-
-------------------------------------------------------------------------
-
-## **Data Sources**
-
-1.  **Vegetation Map of South Africa**
-    -   Mucina, L., Rutherford, M.C., and Powrie, L.W. (2024).\
-    -   <https://bgis.sanbi.org/Projects/Detail/2258>
-2.  **iNaturalist Observations**
-    -   Fetched using the `rinat` package.
-
-------------------------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
 
 ## **Contributing**
 
