@@ -51,7 +51,7 @@ The output from the code is available from this link below (dropbox folder). The
 If you just want to see the output - interactive maps and code - open the *GIS-ANALYSIS* html file. 
 NOTE: I also added an example output for the function section of the code, this is stored in the *map-output.html*
 
-LINK FRO DROPBOX: https://www.dropbox.com/scl/fo/ufm1t1lp4mkm3zgxxwugq/ABZEjNjY0kMtHR54o992EHk?rlkey=2hmx7vxsx2iftxakbiqxytbu4&st=w58dt8pl&dl=0 
+_*LINK FOR DROPBOX:*_ https://www.dropbox.com/scl/fo/ufm1t1lp4mkm3zgxxwugq/ABZEjNjY0kMtHR54o992EHk?rlkey=2hmx7vxsx2iftxakbiqxytbu4&st=w58dt8pl&dl=0 
 ------------------------------------------------------------------------
 ## **Data Citation**
 
