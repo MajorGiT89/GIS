@@ -1,19 +1,21 @@
 # GIS Workflow: Hydnora africana and Euphorbiaceae iNAt distributions Explorations : the intial inspiration
 
-This project was intially created explores the iNat observational distributions of *Hydnora africana* and the *Euphorbiaceae* family within the Western Cape.Hydnora is parasitic on Euphorbiaceae and I wanted to see if this was visible in the iNat observations.
-It also uses vegetation and soil data to understand the environmental context of these species and provides interactive mapping and spatial analysis tools.
+This project was intially created to explore the iNat observational distributions of *Hydnora africana* and the *Euphorbiaceae* family within the Western Cape.Hydnora africana is parasitic on the roots of Euphorbiaceae and I wanted to see if this was visible in the iNat observations.
+The GIS analysis also uses vegetation and soil data to understand the environmental context of these species and provides interactive mapping and spatial analysis tools.
 
-Although it is rather strange and maybe not very useful thing to look the distributions *Hydnora africana* and *Euphorbiaceae* together, I thought that it was good enough data to use to start building my interactive map.
+Although it is rather strange and maybe not very useful to look the distributions *Hydnora africana* and *Euphorbiaceae* together, I thought that it was good enough data to use to start building my interactive map.
 
-What I should have done was do more research and then plotted the specific species on which *Hydnora africana* is usually parasitic on (instead of just the whole family). I have also plotted only Western Cape (WC) occurrences, which may be misleading/omit some important data (although Hydnora africana is most commonly seen in the WC.
+I should have done more research and then plotted the specific species that *Hydnora africana* is usually parasitic on (instead of just the whole family). I have also plotted only Western Cape (WC) occurrences, which may be misleading/omit some important data (although Hydnora africana is most commonly seen in the WC.
 
 Read below how I decided to circumnavigate these issues...
 
 
 # GIS Workflow: The final product
 
-What I did was write a function where the user can define which observations (species/genus/family etc.) they would like to select from iNaturalist and then get an interactive and summaries as output (only for the Wesyern Cape as my computer cannot handle generating maps for larger areas).
+What I did was write a function where the user can define which observations (species/genus/family etc.) they would like to select from iNaturalist and then get an interactive and summaries as output (only for the Western Cape as my computer cannot handle generating maps for larger areas).This function is meant to be a data exploration tool and could possibly be used to visually look for correlations between spatial data.
+
 All the use has to do is enter the names of whichever groups they would like to explore.
+
 The code then returns:
 
 1. An interactive map with:
@@ -33,7 +35,10 @@ The code then returns:
 
 ### Room for improvement:
 
-I would like to add a layer for protected areas/conservation areas/private game reserves and summary tables for how many of the observations occurred in these areas.I would also like to add a layer for showing elevation. 
+- I would like to add a layer for protected areas/conservation areas/private game reserves and summary tables for how many of the observations occurred in these areas.
+- I would also like to add a layer for showing elevation. 
+- I would also like to add an input where the user can define their own buffer area around points (or not at all).
+
 ------------------------------------------------------------------------
 
 ## **Data Citation**
