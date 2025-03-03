@@ -31,7 +31,7 @@ The code then returns:
   - Each vegetation type area
   - Each soil type
 
-###Room for improvement:
+### Room for improvement:
 
 I would like to add a layer for protected areas/conservation areas/private game reserves and summary tables for how many of the observations occurred in these areas.I would also like to add a layer for showing elevation. 
 ------------------------------------------------------------------------
