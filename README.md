@@ -38,6 +38,7 @@ The code then returns:
 - add a layer for protected areas/conservation areas/private game reserves and summary tables for how many of the observations occurred in these areas.
 - add a layer for showing elevation. 
 - add an input where the user can define their own buffer area around points (or not at all).
+- find a suitable legend for the soil type data: the legend it came with was in an ArcGis format so i couldn't access it, for now all you can see is the soil code type ands you have to search for the soil name in google.
 
 ------------------------------------------------------------------------
 
@@ -47,6 +48,8 @@ South African National Biodiversity Institute (2006-2024). The Vegetation Map of
 
 ISRIC – World Soil Information. (2024). SoilGrids250m: Global gridded soil information at 250 m resolution. Retrieved from <https://data.isric.org/geonetwork/srv/eng/catalog.search#/metadata/c3f7cfd5-1f25-4da1-bce9-cdcdd8c1a9a9>.
 
+- THE SOIL DATA FOR SOUTH AFRICA https://data.isric.org/geonetwork/srv/api/records/c3f7cfd5-1f25-4da1-bce9-cdcdd8c1a9a9 
+
 iNaturalist. (2025). Observation data for Hydnora africana obtained from iNaturalist on February 27, 2025. Available at: <https://www.inaturalist.org>.
 
 iNaturalist. (2025). Observation data for Euphorbiaceae obtained from iNaturalist on February 27, 2025. Available at: <https://www.inaturalist.org>.
@@ -54,17 +57,14 @@ iNaturalist. (2025). Observation data for Euphorbiaceae obtained from iNaturalis
 Cartography Vectors. (2025). Western Cape, South Africa Map. Retrieved from <https://cartographyvectors.com/map/1334-western-cape-south-africa>.
 
 ------------------------------------------------------------------------
-#How to use:
+# How to use this repository:
 
------------------------------------------------------------
------------------------------------------------------------
+The raw R code is available, as well as the code in the form of an Rmarkdown file with annotations. The code contains the initial map building code and the function code which automates the entire process. There is also a separate R file with just the function code if you only want to look at that.
 
-## **Contributing**
+The output from the code is available from this link below (dropbox folder). The dropbox also contains the shape files required to run the analysis on your own machine. All you need to do is download the code and the files and then rename the path for which the files are read in (set your own working directory and read the data from wherever you stored it.)
 
-Contributions are welcome! Please create a pull request with your changes and ensure the following:\
-- Clear and concise commit messages.\
-- Well-documented code additions or modifications.\
-- Test your changes locally before submitting.
+I you just want to see the output - interactive maps and code - open the *GIS-ANALYSIS* html file. 
+NOTE: I also added an example output for the function section of the code, this is stored in the *map-output.html*
 
 ------------------------------------------------------------------------
 
@@ -76,11 +76,10 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## **Contact**
 
-For any questions or suggestions, please contact:\
-**Your Name**\
-Email: [your.email\@example.com](mailto:your.email@example.com)\
-GitHub: [YourUsername](https://github.com/YourUsername)
+For any questions or suggestions, please contact:
+**Your Name**
+Email: [nlvantol9\@gmail.com](mailto:nlvantol9@gmail.com)
+GitHub: [MajorGiT89](https://github.com/MajorGiT89)
 
 ------------------------------------------------------------------------
 
-This README provides an overview of the GIS workflow for vegetation and soil analysis, including setup instructions, data sources, and detailed workflow steps. If you need additional features or have any issues, feel free to reach out!
