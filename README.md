@@ -39,6 +39,9 @@ The code then returns:
 - add a layer for showing elevation. 
 - add an input where the user can define their own buffer area around points (or not at all).
 - find a suitable legend for the soil type data: the legend it came with was in an ArcGis format so i couldn't access it, for now all you can see is the soil code type ands you have to search for the soil name in google.
+- The colour palate for the function map output also needs to be refined but I have not yet been able to give it a consistent colour scheme.
+
+## For now this project can be considered a proof of concept for an iNat map analysis tool.
 
 ------------------------------------------------------------------------
 
