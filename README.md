@@ -17,14 +17,17 @@ All the use has to do is enter the names of whichever groups they would like to 
 The code then returns:
 
 1. An interactive map with:
+
  - The individual data points for each group (with labels and links to the observation)
  - Buffer areas of 10km and 1km around each point to see how close they are to each other and how individual points overlap.
  
 2. Layers for the map:
+
   - Different map base layers from Open Street Maps
   - Different layers (with labels) of vegetation types and Soil types
   
-3.Output tables showing how many observations occured in:
+3.Output tables showing how many observations occurred in:
+
   - Each vegetation type area
   - Each soil type
 
