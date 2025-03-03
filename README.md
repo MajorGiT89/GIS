@@ -48,7 +48,7 @@ The raw R code is available, as well as the code in the form of an Rmarkdown fil
 
 The output from the code is available from this link below (dropbox folder). The dropbox also contains the shape files required to run the analysis on your own machine. All you need to do is download the code and the files and then rename the path for which the files are read in (set your own working directory and read the data from wherever you stored it.)
 
-If you just want to see the output - interactive maps and code - open the *GIS-ANALYSIS* html file. 
+If you want to see the *entire workflow* and output - interactive maps and code - open the *GIS-ANALYSIS* html file. 
 NOTE: I also added an example output for the function section of the code, this is stored in the *map-output.html*
 
 _*LINK FOR DROPBOX:*_ https://www.dropbox.com/scl/fo/ufm1t1lp4mkm3zgxxwugq/ABZEjNjY0kMtHR54o992EHk?rlkey=2hmx7vxsx2iftxakbiqxytbu4&st=w58dt8pl&dl=0 
