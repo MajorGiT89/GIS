@@ -35,9 +35,9 @@ The code then returns:
 
 ### Room for improvement:
 
-- I would like to add a layer for protected areas/conservation areas/private game reserves and summary tables for how many of the observations occurred in these areas.
-- I would also like to add a layer for showing elevation. 
-- I would also like to add an input where the user can define their own buffer area around points (or not at all).
+- add a layer for protected areas/conservation areas/private game reserves and summary tables for how many of the observations occurred in these areas.
+- add a layer for showing elevation. 
+- add an input where the user can define their own buffer area around points (or not at all).
 
 ------------------------------------------------------------------------
 
