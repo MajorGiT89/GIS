@@ -42,6 +42,16 @@ The code then returns:
 
 ------------------------------------------------------------------------
 
+# How to use this repository:
+
+The raw R code is available, as well as the code in the form of an Rmarkdown file with annotations. The code contains the initial map building code and the function code which automates the entire process. There is also a separate R file with just the function code if you only want to look at that.
+
+The output from the code is available from this link below (dropbox folder). The dropbox also contains the shape files required to run the analysis on your own machine. All you need to do is download the code and the files and then rename the path for which the files are read in (set your own working directory and read the data from wherever you stored it.)
+
+If you just want to see the output - interactive maps and code - open the *GIS-ANALYSIS* html file. 
+NOTE: I also added an example output for the function section of the code, this is stored in the *map-output.html*
+
+------------------------------------------------------------------------
 ## **Data Citation**
 
 South African National Biodiversity Institute (2006-2024). The Vegetation Map of South Africa, Lesotho, and Swaziland, Mucina, L., Rutherford, M.C., and Powrie, L.W. (Editors), Online, <https://bgis.sanbi.org/Projects/Detail/2258>, Version 2024.
@@ -55,16 +65,6 @@ iNaturalist. (2025). Observation data for Hydnora africana obtained from iNatura
 iNaturalist. (2025). Observation data for Euphorbiaceae obtained from iNaturalist on February 27, 2025. Available at: <https://www.inaturalist.org>.
 
 Cartography Vectors. (2025). Western Cape, South Africa Map. Retrieved from <https://cartographyvectors.com/map/1334-western-cape-south-africa>.
-
-------------------------------------------------------------------------
-# How to use this repository:
-
-The raw R code is available, as well as the code in the form of an Rmarkdown file with annotations. The code contains the initial map building code and the function code which automates the entire process. There is also a separate R file with just the function code if you only want to look at that.
-
-The output from the code is available from this link below (dropbox folder). The dropbox also contains the shape files required to run the analysis on your own machine. All you need to do is download the code and the files and then rename the path for which the files are read in (set your own working directory and read the data from wherever you stored it.)
-
-If you just want to see the output - interactive maps and code - open the *GIS-ANALYSIS* html file. 
-NOTE: I also added an example output for the function section of the code, this is stored in the *map-output.html*
 
 ------------------------------------------------------------------------
 
