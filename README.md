@@ -72,12 +72,6 @@ Cartography Vectors. (2025). Western Cape, South Africa Map. Retrieved from <htt
 
 ------------------------------------------------------------------------
 
-## **License**
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-------------------------------------------------------------------------
-
 ## **Contact**
 
 Email: [nlvantol9\@gmail.com](mailto:nlvantol9@gmail.com)
